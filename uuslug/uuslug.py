@@ -21,14 +21,19 @@ def slugify(text, entities=True, decimal=True, hexadecimal=True, max_length=0,
 
 def uuslug(s, instance, entities=True, decimal=True, hexadecimal=True,
            slug_field='slug', filter_dict=None, start_no=1, max_length=0,
-           word_boundary=False, separator='-', save_order=False, stopwords=()):
+           word_boundary=False, separator='-', save_order=False, stopwords=(),
+           model_manager=None):
 
     """ This method tries a little harder than django's django.template.defaultfilters.slugify. """
 
     if isinstance(instance, ModelBase):
         raise Exception("Error: you must pass an instance to uuslug, not a model.")
 
-    queryset = instance.__class__.objects.all()
+    if model_manager:
+        queryset = model_manager.all()
+    else:
+        queryset = instance.__class__.objects.all()
+
     if filter_dict:
         queryset = queryset.filter(**filter_dict)
     if instance.pk:
