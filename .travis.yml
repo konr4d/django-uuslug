@@ -3,19 +3,18 @@ language: python
 dist: xenial
 
 python:
+  - "3.8"
   - "3.7"
   - "3.6"
-  - "2.7"
-  - pypy
   - pypy3
 
 env:
+  - # Django 3.0.x
+  - DJANGO="django>=3.0,<3.1"
   # Django 2.2.x
   - DJANGO="django>=2.2,<2.3"
   # Django 2.1.x
   - DJANGO="django>=2.1,<2.2"
-  # Django 1.11.x
-  - DJANGO="django>=1.11,<1.12"
 
 install:
   - pip install $DJANGO
@@ -25,18 +24,6 @@ install:
 
 before_script:
   - "flake8 uuslug"
-
-matrix:
-  exclude:
-   - python: "2.7"
-     env: DJANGO="django>=2.2,<2.3"
-   - python: "2.7"
-     env: DJANGO="django>=2.1,<2.2"
-   # pypy is the Python 2.7
-   - python: "pypy"
-     env: DJANGO="django>=2.2,<2.3"
-   - python: "pypy"
-     env: DJANGO="django>=2.1,<2.2"
 
 script: coverage run --source=uuslug manage.py test
 
